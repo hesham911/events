@@ -1,0 +1,13 @@
+{
+    "name": "s3geeks/events",
+    "description": "event package will manage your events",
+    "type": "library",
+    "license": "s3geeks",
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "S3geeks\\Events\\": "src/"
+        }
+    }
+}
