@@ -1,4 +1,3 @@
-[![Latest Version](https://img.shields.io/github/release/hesham911/events.svg?style=flat-square)](https://github.com/hesham911/events/releases)
 [![Issues](https://img.shields.io/github/issues/hesham911/events.svg?style=flat-square)](https://github.com/hesham911/events/issues)
 [![Fork](https://img.shields.io/github/forks/hesham911/events.svg?style=flat-square)](https://github.com/hesham911/events/network/members)
 
@@ -21,17 +20,26 @@ composer require s3geeks/events
 
 ## Usage
 
+After install your project and create You database 
+
+```python
+php artisan migrate
+```
+
+
+If you want to overwrite or customize views file just Publish you it 
+
 ```python
 php artisan vendor:publish
 ```
 
-Choose the index of package like:
+Choose the index of package like this:
 
 ```python
 [8] Provider: S3geeks\Events\EventsServiceProvider
 ```
 
-and you can overwrite or customize view file
+If you want to overwrite or customize view file
 
 
 ## Contributing
