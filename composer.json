@@ -9,5 +9,12 @@
         "psr-4": {
             "S3geeks\\Events\\": "src/"
         }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "S3geeks\\Events\\EventsServiceProvider"
+            ]
+        }
     }
 }
