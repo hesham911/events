@@ -2,7 +2,7 @@
     "name": "s3geeks/events",
     "description": "event package will manage your events",
     "type": "library",
-    "license": "s3geeks",
+    "license": "Mit",
     "minimum-stability": "dev",
     "require": {},
     "autoload": {
