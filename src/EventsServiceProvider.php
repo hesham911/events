@@ -18,6 +18,11 @@ Class EventsServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/views/Admin', 'adminEvents');
         $this->loadViewsFrom(__DIR__.'/views/Frontend', 'frontendEvents');
         $this->loadMigrationsFrom(__DIR__ . '/Database/migrations');
+
+        $this->publishes([
+            __DIR__.'/views/Admin' => resource_path('views/vendor/Admin/adminEvents'),
+            __DIR__.'/views/Frontend' => resource_path('views/vendor/Frontend/frontendEvents'),
+        ]);
     }
 
     public function register()
