@@ -1,11 +1,10 @@
 <?php
 
-namespace S3geeks\Events\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
-class EventsController extends Controller
+class WorkshopsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +13,7 @@ class EventsController extends Controller
      */
     public function index()
     {
-        return view('adminEvents::events.index');
+        //
     }
 
     /**
@@ -24,7 +23,7 @@ class EventsController extends Controller
      */
     public function create()
     {
-        return view('adminEvents::create');
+        //
     }
 
     /**
@@ -46,7 +45,7 @@ class EventsController extends Controller
      */
     public function show($id)
     {
-        return view('adminEvents::show');
+        //
     }
 
     /**
@@ -57,7 +56,7 @@ class EventsController extends Controller
      */
     public function edit($id)
     {
-        return view('adminEvents::edit');
+        //
     }
 
     /**
