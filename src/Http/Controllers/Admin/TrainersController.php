@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace S3geeks\Events\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
 
 class TrainersController extends Controller
 {
