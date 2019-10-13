@@ -1,8 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace S3geeks\Events\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use S3geeks\Events\Models\center;
+use S3geeks\Events\Models\country;
+use S3geeks\Events\Models\division;
+use S3geeks\Events\Models\trainer;
+use S3geeks\Events\Models\workshop;
 
 class WorkshopsController extends Controller
 {
@@ -13,7 +21,7 @@ class WorkshopsController extends Controller
      */
     public function index()
     {
-        //
+        return view('adminEvents::events.index');
     }
 
     /**
@@ -23,7 +31,7 @@ class WorkshopsController extends Controller
      */
     public function create()
     {
-        //
+        return view('adminEvents::events.create');
     }
 
     /**
@@ -34,7 +42,38 @@ class WorkshopsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $item = $request->all();
+        $rules = [
+            'title'         =>  'required|min:10',
+            'start_date'    =>  'required|date',
+            'end_date'      =>  'required|date',
+            'description'   =>  'required|min:255',
+            'images'        =>  'required',
+            'center'        =>  'required',
+            'trainer'       =>  'required',
+            'countries'     =>  'required',
+            'divisions'     =>  'required',
+        ];
+        $v = Validator::make($item,$rules);
+        if ($v->fails()){
+            dd($v->errors());
+        }else{
+            $centerId   =   $item['center'];
+            $trainerId  =   $item['trainer'];
+            $countryId  =   $item['countries'];
+            $divisionId =   $item['divisions'];
+
+            $item['user_id'] = 1;
+
+           $workshop = workshop::create($item);
+
+         $addTrainer =  $workshop->trainers()->attach($trainerId);
+         $addCenter =  $workshop->trainers()->attach($centerId);
+         $addDivision =  division::find($divisionId)->workshops()->sync($workshop);
+
+        
+
+        }
     }
 
     /**
@@ -45,7 +84,7 @@ class WorkshopsController extends Controller
      */
     public function show($id)
     {
-        //
+        return view('adminEvents::events.show');
     }
 
     /**
@@ -56,7 +95,7 @@ class WorkshopsController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('adminEvents::events.edit');
     }
 
     /**
@@ -80,5 +119,29 @@ class WorkshopsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function getCenters()
+    {
+        $centers = center::all();
+        return response()->json($centers);
+    }
+
+    public function getTrainers()
+    {
+        $centers = trainer::all();
+        return response()->json($centers);
+    }
+
+    public function getCountries()
+    {
+        $centers = country::all();
+        return response()->json($centers);
+    }
+
+    public function getDivisions()
+    {
+        $centers = division::all();
+        return response()->json($centers);
     }
 }
