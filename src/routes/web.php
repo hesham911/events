@@ -9,21 +9,25 @@
 
 Route::group(
     [
-        'namespace' => 'S3geeks\Events\Http\Controllers\Admin',
-        'prefix'    => 'admin'
+        'namespace'     => 'S3geeks\Events\Http\Controllers\Admin',
+        'prefix'        => 'admin',
     ], function (){
 
         /*  Event Route */
         Route::group([
-            'prefix'    => 'events'
+            'prefix'    => 'event'
         ],function(){
-            Route::get('/', 'EventsController@index');
-            Route::get('event/{id}', 'EventsController@show');
-            Route::get('event/create', 'EventsController@create');
-            Route::post('event/create', 'EventsController@store');
-            Route::get('event/edit/{id}', 'EventsController@edit');
-            Route::post('event/edit/{id}', 'EventsController@update');
-            Route::post('event/delete/{id}', 'EventsController@delete');
+            Route::get('/', 'WorkshopsController@index');
+            Route::get('show/{id}', 'WorkshopsController@show');
+            Route::get('create', 'WorkshopsController@create');
+            Route::post('create', 'WorkshopsController@store')->name('eventCreate');
+            Route::get('edit/{id}', 'WorkshopsController@edit');
+            Route::post('edit/{id}', 'WorkshopsController@update');
+            Route::post('delete/{id}', 'WorkshopsController@delete');
+            Route::get('get/centers/', 'WorkshopsController@getCenters');
+            Route::get('get/trainers/', 'WorkshopsController@getTrainers');
+            Route::get('get/countries/', 'WorkshopsController@getCountries');
+            Route::get('get/divisions/', 'WorkshopsController@getDivisions');
         });
 
     /*  Trainer Route */
