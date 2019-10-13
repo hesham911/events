@@ -71,7 +71,7 @@ class WorkshopsController extends Controller
          $addCenter =  $workshop->trainers()->attach($centerId);
          $addDivision =  division::find($divisionId)->workshops()->sync($workshop);
 
-        
+
 
         }
     }
