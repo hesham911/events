@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCountrableTable extends Migration
+class CreateDivisionablesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,12 +15,11 @@ class CreateCountrableTable extends Migration
      */
     public function up()
     {
-        Schema::create('countrable', function (Blueprint $table) {
+        Schema::create('divisionables', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('country_id');
             $table->integer('division_id');
-            $table->integer('countrable_id');
-            $table->string('countrable_type');
+            $table->integer('divisionables_id');
+            $table->string('divisionables_type');
             $table->timestamps();
         });
     }
@@ -32,6 +31,6 @@ class CreateCountrableTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('countrable');
+        Schema::dropIfExists('divisionables');
     }
 }

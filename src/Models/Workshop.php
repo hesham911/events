@@ -24,4 +24,9 @@ class workshop extends Model
         return $this->belongsTo(User::class);
 
     }
+
+    public function divisions()
+    {
+        return $this->morphToMany(division::class, 'divisionables');
+    }
 }
