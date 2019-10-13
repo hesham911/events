@@ -1,0 +1,18 @@
+h1{
+    color: red;
+}
+form
+{
+    max-width: 500px;
+}
+.h-trainer-form
+{
+    display: none;
+    margin: 5px;
+}
+
+.h-workshop-form
+{
+    display: none;
+    margin: 6px;
+}

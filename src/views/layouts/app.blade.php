@@ -8,12 +8,20 @@
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
     <link href="{{asset('css/app.css')}}" rel="stylesheet">
+    <link href="{{asset('vendor/Events/css/customStyle.css')}}" rel="stylesheet">
+    @yield('customCss')
 </head>
 <body>
-<div class="title">create</div>
+<div class="h1 text-center m-5">
+    @yield('titlePage')
+</div>
 <div class="container">
     @yield('content')
 </div>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
 <script src="{{asset('js/app.js')}}"></script>
+@yield('customScript')
 </body>
 </html>
