@@ -2,6 +2,7 @@
 
 namespace S3geeks\Events\Http\Controllers\Admin;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -21,7 +22,8 @@ class WorkshopsController extends Controller
      */
     public function index()
     {
-        return view('adminEvents::events.index');
+        $items = workshop::where('active',1)->paginate(15);
+        return view('adminEvents::workshops.index');
     }
 
     /**
@@ -31,7 +33,7 @@ class WorkshopsController extends Controller
      */
     public function create()
     {
-        return view('adminEvents::events.create');
+        return view('adminEvents::workshops.create');
     }
 
     /**
@@ -42,6 +44,7 @@ class WorkshopsController extends Controller
      */
     public function store(Request $request)
     {
+
         $item = $request->all();
         $rules = [
             'title'         =>  'required|min:10',
@@ -58,13 +61,14 @@ class WorkshopsController extends Controller
         if ($v->fails()){
             dd($v->errors());
         }else{
-            $centerId   =   $item['center'];
-            $trainerId  =   $item['trainer'];
-            $countryId  =   $item['countries'];
-            $divisionId =   $item['divisions'];
-
-            $item['user_id'] = 1;
-
+            $item['start_time'] = Carbon::createFromFormat('Y-m-d\TH:i',$item['start_date'])->toTimeString();
+            $item['end_time']   = Carbon::createFromFormat('Y-m-d\TH:i',$item['end_date'])->toTimeString();
+            $item['start_date'] = Carbon::createFromFormat('Y-m-d\TH:i',$item['start_date'])->toDateString();
+            $item['end_date']   = Carbon::createFromFormat('Y-m-d\TH:i',$item['end_date'])->toDateString();
+            $centerId           =   $item['center'];
+            $trainerId          =   $item['trainer'];
+            $divisionId         =   $item['divisions'];
+            $item['user_id']    = auth()->id();
            $workshop = workshop::create($item);
 
          $addTrainer =  $workshop->trainers()->attach($trainerId);
@@ -84,7 +88,7 @@ class WorkshopsController extends Controller
      */
     public function show($id)
     {
-        return view('adminEvents::events.show');
+        return view('adminEvents::workshops.show');
     }
 
     /**
@@ -95,7 +99,7 @@ class WorkshopsController extends Controller
      */
     public function edit($id)
     {
-        return view('adminEvents::events.edit');
+        return view('adminEvents::workshops.edit');
     }
 
     /**
