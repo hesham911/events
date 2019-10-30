@@ -30,12 +30,13 @@ class CreateTrainersTable extends Migration
             $table->string('url_linked_in')->nullable();
 
             //> file of cv trainers
-            $table->string('portfolio')->nullable();
-            $table->string('filed')->nullable();
+            $table->string('portfolio_link')->nullable();
+            $table->string('cv')->nullable();
+            $table->string('field')->nullable();
             $table->tinyInteger('block')->default(0);
 
             //> good bad or block
-            $table->tinyInteger('status')->default(1);
+            $table->tinyInteger('active')->default(1);
             $table->timestamps();
         });
     }
