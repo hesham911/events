@@ -9,7 +9,15 @@ use App\User;
 class workshop extends Model
 {
 
-    public $fillable = ['title','description','user_id'];
+    public $fillable = [
+        'title',
+        'description',
+        'user_id',
+        'start_date',
+        'end_date',
+        'start_time',
+        'end_time',
+        ];
     public function trainers()
     {
         return $this->belongsToMany(Trainer::class,'workshop_trainer');

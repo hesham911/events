@@ -6,7 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class center extends Model
 {
-    public $fillable =['title'];
+    public $fillable =[
+        'title',
+        'address',
+        'num_phone',
+        'email',
+        'url_fb',
+        'url_twitter',
+        'website',
+        'logo',
+        'num_class_room',
+        'Air_conditioned_place',
+    ];
 
 
     public function divisions()
