@@ -11,49 +11,58 @@ Route::group(
     [
         'namespace'     => 'S3geeks\Events\Http\Controllers\Admin',
         'prefix'        => 'admin',
-    ], function (){
-
-        /*  Event Route */
-        Route::group([
-            'prefix'    => 'event'
-        ],function(){
-            Route::get('/', 'WorkshopsController@index');
-            Route::get('show/{id}', 'WorkshopsController@show');
-            Route::get('create', 'WorkshopsController@create');
-            Route::post('create', 'WorkshopsController@store')->name('eventCreate');
-            Route::get('edit/{id}', 'WorkshopsController@edit');
-            Route::post('edit/{id}', 'WorkshopsController@update');
-            Route::post('delete/{id}', 'WorkshopsController@delete');
-            Route::get('get/centers/', 'WorkshopsController@getCenters');
-            Route::get('get/trainers/', 'WorkshopsController@getTrainers');
-            Route::get('get/countries/', 'WorkshopsController@getCountries');
-            Route::get('get/divisions/', 'WorkshopsController@getDivisions');
-        });
-
-    /*  Trainer Route */
-    Route::group([
-        'prefix'    => 'trainers'
-    ],function(){
-        Route::get('/', 'EventsController@index');
-        Route::get('trainer/{id}', 'TrainersController@show');
-        Route::get('trainer/create', 'TrainersController@create');
-        Route::post('trainer/create', 'TrainersController@store');
-        Route::get('trainer/edit/{id}', 'TrainersController@edit');
-        Route::post('trainer/edit/{id}', 'TrainersController@update');
-        Route::post('trainer/delete/{id}', 'TrainersController@delete');
-    });
+        'middleware'        => ['web','auth'],
+    ],
+    function (){
 
     /*  workshop Route */
     Route::group([
         'prefix'    => 'workshops'
-    ],function(){
-        Route::get('/', 'EventsController@index');
-        Route::get('workshop/{id}', 'WorkshopsController@show');
-        Route::get('workshop/create', 'WorkshopsController@create');
-        Route::post('workshop/create', 'WorkshopsController@store');
-        Route::get('workshop/edit/{id}', 'WorkshopsController@edit');
-        Route::post('workshop/edit/{id}', 'WorkshopsController@update');
-        Route::post('workshop/delete/{id}', 'WorkshopsController@delete');
+    ],
+        function(){
+        Route::get('/', 'WorkshopsController@index');
+        Route::get('show/{id}', 'WorkshopsController@show');
+        Route::get('create', 'WorkshopsController@create');
+        Route::post('create', 'WorkshopsController@store')->name('eventCreate');
+        Route::get('edit/{id}', 'WorkshopsController@edit');
+        Route::post('edit/{id}', 'WorkshopsController@update');
+        Route::post('delete/{id}', 'WorkshopsController@delete');
+        Route::get('get/centers/', 'WorkshopsController@getCenters');
+        Route::get('get/trainers/', 'WorkshopsController@getTrainers');
+        Route::get('get/countries/', 'WorkshopsController@getCountries');
+        Route::get('get/divisions/', 'WorkshopsController@getDivisions');
+    });
+
+    /*  Trainer Route */
+    Route::group([
+        'prefix'    => 'trainers'
+    ],
+        function(){
+        Route::get('/', 'TrainersController@index');
+        Route::get('show/{id}', 'TrainersController@show');
+        Route::get('create', 'TrainersController@create');
+        Route::post('create', 'TrainersController@store')->name('trainer-create');
+        Route::get('edit/{id}', 'TrainersController@edit');
+        Route::post('edit/{id}', 'TrainersController@update');
+        Route::post('delete/{id}', 'TrainersController@delete');
+        Route::get('get/countries/', 'TrainersController@getCountries');
+        Route::get('get/divisions/', 'TrainersController@getDivisions');
+    });
+
+    /*  centers Route */
+    Route::group([
+        'prefix'    => 'centers'
+    ],
+        function(){
+        Route::get('/', 'CentersController@index');
+        Route::get('show/{id}', 'CentersController@show');
+        Route::get('create', 'CentersController@create');
+        Route::post('create', 'CentersController@store')->name('center-create');
+        Route::get('edit/{id}', 'CentersController@edit');
+        Route::post('edit/{id}', 'CentersController@update');
+        Route::post('delete/{id}', 'CentersController@delete');
+        Route::get('get/countries/', 'CentersController@getCountries');
+        Route::get('get/divisions/', 'CentersController@getDivisions');
     });
 });
 
@@ -61,8 +70,9 @@ Route::group(
 Route::group(
     [
         'namespace' => 'S3geeks\Events\Http\Controllers\Frontend',
-        'prefix'    => 'frontend'
+        'prefix'    => 'frontend',
+        'middleware'        => 'web',
     ], function (){
 
-        Route::get('index', 'EventsController@index');
+        Route::get('index', 'WorkshopsController@index');
 });
