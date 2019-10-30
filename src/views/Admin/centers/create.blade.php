@@ -2,21 +2,14 @@
 
 
 @section('titlePage')
-    <h1>trainer Add</h1>
+    <h1>Center add</h1>
 @endsection
 @section('content')
-
-    <form id="centerForm" action="{{route('trainer-create')}}" method="post" enctype="multipart/form-data">
+    <form id="centerForm" action="{{route('center-create')}}" method="post" enctype="multipart/form-data">
         {{csrf_field()}}
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="first_name">First name</label>
-                <input name="first_name" type="text" class="form-control" id="first_name" placeholder="">
-            </div>
-            <div class="form-group col-md-6">
-                <label for="last_name">Last name</label>
-                <input name="last_name" type="text" class="form-control" id="last_name" placeholder="">
-            </div>
+        <div class="form-group">
+            <label for="centerName">center name</label>
+            <input name="title" type="text" class="form-control" id="centerName" placeholder="">
         </div>
         <div class="form-group">
             <label for="centerAddress">Address </label>
@@ -26,10 +19,6 @@
             <div class="form-group col-md-6">
                 <label for="centerPhoneNum"> phone Number  </label>
                 <input class="form-control" name="num_phone" id="centerPhoneNum" type="number">
-            </div>
-            <div class="form-group col-md-6">
-                <label for="work_phone">Work phone Number  </label>
-                <input class="form-control" name="work_num_phone" id="work_phone" type="number">
             </div>
             <div class="form-group col-md-6">
                 <label for="centerEmail">Email </label>
@@ -44,17 +33,24 @@
                 <input class="form-control" name="url_twitter" id="centerTwitterUrl" type="url">
             </div>
             <div class="form-group col-md-6">
-                <label for="url_linked_in"> LinkedIn url </label>
-                <input class="form-control" name="url_linked_in" id="url_linked_in" type="url">
+                <label for="website"> website </label>
+                <input class="form-control" name="website" id="website" type="url">
             </div>
             <div class="form-group col-md-6">
-                <label for="portfolio_link"> Portfolio Link </label>
-                <input class="form-control" name="portfolio_link" id="portfolio_link" type="url">
+                <label for="logo">Logo file</label>
+                <input  name="logo" type="file" class="form-control-file" id="logo">
             </div>
-            <div class="form-group col-md-6">
-                <label for="field">Field</label>
-                <input name="field" type="text" class="form-control" id="field" placeholder="">
-            </div>
+                <div class="form-group col-md-6">
+                    <label for="num_class_room"> class room number  </label>
+                    <input class="form-control" name="num_class_room" id="num_class_room" type="number">
+                </div>
+                <div class="form-group  col-md-6">
+                    <div class="custom-control custom-switch">
+                        <input name="Air_conditioned_place" value="1" type="checkbox" class="custom-control-input" id="customSwitch1">
+                        <label class="custom-control-label" for="customSwitch1">Air conditioned</label>
+                    </div>
+                </div>
+
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="countries"> Country </label>
@@ -69,10 +65,6 @@
                 </div>
 
             </div>
-            <div class="form-group col-md-6">
-                <label for="cv">C.V</label>
-                <input  name="cv" type="file" class="form-control-file" id="cv">
-            </div>
         </div>
         <input type="submit" value="Add center" class="btn btn-primary">
     </form>
@@ -81,54 +73,6 @@
 
 @section('customScript')
     <script>
-
-        $.ajax({
-            type: 'get',
-            url: 'get/centers/',
-            data : {"_token":"{{ csrf_token() }}"},
-            dataType: "json",
-            success:function(data) {
-                console.log(data);
-                if(data){
-                    $('#center').empty();
-                    $('#center').focus;
-                    $('#center').append('<option value="">-- أسم المركز --</option>');
-
-                    $.each(data, function(key, value){
-                        $('select[name="center"]').append('<option value="'+ data[key]['id'] +'">' + value.title+ '</option>');
-                    });
-                }else{
-                    $('#center').empty();
-                }
-            },
-            error: function(){
-                console.log('success');
-            }
-        });
-
-        $.ajax({
-            type: 'get',
-            url: 'get/trainers/',
-            data : {"_token":"{{ csrf_token() }}"},
-            dataType: "json",
-            success:function(data) {
-                console.log(data);
-                if(data){
-                    $('#trainer').empty();
-                    $('#trainer').focus;
-                    $('#trainer').append('<option value="">-- أسم المدرب --</option>');
-
-                    $.each(data, function(key, value){
-                        $('select[name="trainer"]').append('<option value="'+ data[key]['id'] +'">' + value.first_name + ' ' + value.last_name + '</option>');
-                    });
-                }else{
-                    $('#trainer').empty();
-                }
-            },
-            error: function(){
-                console.log('success');
-            }
-        });
 
         $.ajax({
             type: 'get',
