@@ -4,7 +4,6 @@ namespace S3geeks\Events\Http\Controllers\Admin;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use S3geeks\Events\Models\center;
@@ -12,8 +11,10 @@ use S3geeks\Events\Models\country;
 use S3geeks\Events\Models\division;
 use S3geeks\Events\Models\trainer;
 use S3geeks\Events\Models\workshop;
+use S3geeks\Events\Http\Controllers\Admin\MasterController as MasterController;
 
-class WorkshopsController extends Controller
+
+class WorkshopsController extends MasterController
 {
     /**
      * Display a listing of the resource.

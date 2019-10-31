@@ -3,14 +3,15 @@
 namespace S3geeks\Events\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use S3geeks\Events\Models\center;
 use S3geeks\Events\Models\country;
 use S3geeks\Events\Models\division;
 use Illuminate\Support\Facades\Validator;
+use S3geeks\Events\Http\Controllers\Admin\MasterController as MasterController;
+use S3geeks\Events\Models\uploads;
 
 
-class CentersController extends Controller
+class CentersController extends MasterController
 {
     /**
      * Display a listing of the resource.
@@ -81,7 +82,8 @@ class CentersController extends Controller
      */
     public function show($id)
     {
-        return view('adminEvents::workshops.show');
+        $item = center::findOrFail($id);
+        return view('adminEvents::centers.show',compact('item'));
     }
 
     /**
@@ -90,9 +92,11 @@ class CentersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        return view('adminEvents::workshops.edit');
+        $item = center::findOrFail($request->id);
+
+        return view('adminEvents::centers.edit',compact('item'));
     }
 
     /**
@@ -102,31 +106,44 @@ class CentersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $item = $request->all();
+        $rules = [
+            'title'         =>  'required|min:5',
+            'address'       =>  'required',
+            'num_phone'      =>  'required|numeric|min:11',
+            'email'         =>  'required|email',
+            'url_fb'        =>  'required|url',
+            'url_twitter'   =>  'required|url',
+            'logo'          =>  'required|image|mimes:png,jpg,jpeg,bmp',
+//            'website'       =>  'required|url',
+            'countries'     =>  'required',
+            'divisions'     =>  'required',
+        ];
+        $v = Validator::make($item,$rules);
+        if ($v->fails()){
+            dd($v->errors());
+        }else{
+            if (request()->hasFile('logo')){
+                $file = request()->file('logo');
+                $file_name =  time() . '-' . rand() . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('upload/'), $file_name );
+//                if(!empty($old_file)) @unlink(public_path('upload/').$old_file);
+                $item['logo'] = $file_name;
+            }
+            $divisionId         =   $item['divisions'];
+            $item['user_id']    = auth()->id();
+            $center = center::findOrFail($request->id);
+            $center->update($item);
+
+
+            $addDivision =  center::findOrFail($request->id)->divisions()
+                ->updateExistingPivot($center->divisions['0']->id,[
+                'division_id' => $divisionId,
+            ]);
+
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
-    public function getCountries()
-    {
-        $centers = country::all();
-        return response()->json($centers);
-    }
-
-    public function getDivisions()
-    {
-        $centers = division::all();
-        return response()->json($centers);
-    }
 }
