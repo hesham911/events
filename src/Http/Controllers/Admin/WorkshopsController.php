@@ -10,6 +10,7 @@ use S3geeks\Events\Models\center;
 use S3geeks\Events\Models\country;
 use S3geeks\Events\Models\division;
 use S3geeks\Events\Models\trainer;
+use S3geeks\Events\Models\uploads;
 use S3geeks\Events\Models\workshop;
 use S3geeks\Events\Http\Controllers\Admin\MasterController as MasterController;
 
@@ -24,7 +25,7 @@ class WorkshopsController extends MasterController
     public function index()
     {
         $items = workshop::where('active',1)->paginate(15);
-        return view('adminEvents::workshops.index');
+        return view('adminEvents::workshops.index',compact('$items'));
     }
 
     /**
@@ -82,12 +83,9 @@ class WorkshopsController extends MasterController
                 }
             }
 
-
          $addTrainer =  $workshop->centers()->attach($trainerId);
          $addCenter =  $workshop->trainers()->attach($centerId);
          $addDivision =  division::find($divisionId)->workshops()->sync($workshop);
-
-
 
         }
     }

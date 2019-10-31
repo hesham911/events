@@ -81,55 +81,6 @@
 
 @section('customScript')
     <script>
-
-        $.ajax({
-            type: 'get',
-            url: 'get/centers/',
-            data : {"_token":"{{ csrf_token() }}"},
-            dataType: "json",
-            success:function(data) {
-                console.log(data);
-                if(data){
-                    $('#center').empty();
-                    $('#center').focus;
-                    $('#center').append('<option value="">-- أسم المركز --</option>');
-
-                    $.each(data, function(key, value){
-                        $('select[name="center"]').append('<option value="'+ data[key]['id'] +'">' + value.title+ '</option>');
-                    });
-                }else{
-                    $('#center').empty();
-                }
-            },
-            error: function(){
-                console.log('success');
-            }
-        });
-
-        $.ajax({
-            type: 'get',
-            url: 'get/trainers/',
-            data : {"_token":"{{ csrf_token() }}"},
-            dataType: "json",
-            success:function(data) {
-                console.log(data);
-                if(data){
-                    $('#trainer').empty();
-                    $('#trainer').focus;
-                    $('#trainer').append('<option value="">-- أسم المدرب --</option>');
-
-                    $.each(data, function(key, value){
-                        $('select[name="trainer"]').append('<option value="'+ data[key]['id'] +'">' + value.first_name + ' ' + value.last_name + '</option>');
-                    });
-                }else{
-                    $('#trainer').empty();
-                }
-            },
-            error: function(){
-                console.log('success');
-            }
-        });
-
         $.ajax({
             type: 'get',
             url: "{{route('get-countries')}}",
