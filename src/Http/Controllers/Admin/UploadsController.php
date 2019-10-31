@@ -4,129 +4,80 @@ namespace S3geeks\Events\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use S3geeks\Events\Models\center;
-use S3geeks\Events\Models\country;
-use S3geeks\Events\Models\division;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Response;
+use S3geeks\Events\Models\uploads;
+use Illuminate\Support\Facades\File;
 
-
-class CentersController extends Controller
+class UploadsController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return mixed
      */
-    public function index()
+    public function dropzone(Request $request)
     {
-        $items = center::where('active',1)->paginate(15);
-        return view('adminEvents::centers.index');
-    }
+        $input = $request->all();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view('adminEvents::centers.create');
-    }
+        $rules = array(
+            'file' => 'image|mimes:png,jpg,jpeg,bmp',
+        );
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $item = $request->all();
-        $rules = [
-            'title'         =>  'required|min:5',
-            'address'       =>  'required',
-            'num_phone'      =>  'required|numeric|min:11',
-            'email'         =>  'required|email',
-            'url_fb'        =>  'required|url',
-            'url_twitter'   =>  'required|url',
-            'logo'          =>  'required|image|mimes:png,jpg,jpeg,bmp',
-//            'website'       =>  'required|url',
-            'countries'     =>  'required',
-            'divisions'     =>  'required',
-        ];
-        $v = Validator::make($item,$rules);
-        if ($v->fails()){
-            dd($v->errors());
-        }else{
-            if (request()->hasFile('logo')){
-                $file = request()->file('logo');
-                $file_name =  time() . '-' . rand() . '.' . $file->getClientOriginalExtension();
-                $file->move(public_path('upload/'), $file_name );
-                if(!empty($old_file)) @unlink(public_path('upload/').$old_file);
-                $item['logo'] = $file_name;
-            }
-            $divisionId         =   $item['divisions'];
-            $item['user_id']    = auth()->id();
-            $center = center::create($item);
-            $addDivision =  division::find($divisionId)->centers()->sync($center);
+        $validation = Validator::make($input, $rules);
 
+        if ($validation->fails())
+        {
+            return Response::make($validation->errors()->first(), 400);
         }
+        $input = $request->file('file');
+        $extension = $request->file->getClientOriginalExtension();
+
+        $directory = public_path('upload');
+        $filename = time() . '-' . rand() . '.' . $extension;
+        $filesize =$request->file('file')->getSize();
+
+        $upload = new uploads();
+        $input->move($directory,$filename);
+        $upload_success =  $upload->create([
+            'name' => $filename,
+            'size' => $filesize,
+            'type' => 0,
+        ]);
+        if( $upload_success ) {
+
+            return Response::json([
+                'id'=> $upload_success->id,
+                'success' => true,
+            ], 200);
+        } else {
+            return Response::json('error', 400);
+        }
+
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function show($id)
+    public function deleteDropzone(Request $request)
     {
-        return view('adminEvents::workshops.show');
+        if($request->ajax()) {
+            $photo = uploads::findOrFail($request['id']); //Get image by id or desired parameters
+
+            //Delete file record from DB
+            $path = public_path('upload').'/'.$photo->name;
+            $path = str_replace('\\', '/', $path);
+            if(File::exists($path)) {
+                $photo->delete();
+                File::delete($path);
+            }
+
+            return response('Photo deleted', 200); //return success
+        }
+        return response('Photo unDeleted', 400); //return success
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function delete(Request $request)
     {
-        return view('adminEvents::workshops.edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
-    public function getCountries()
-    {
-        $centers = country::all();
-        return response()->json($centers);
-    }
-
-    public function getDivisions()
-    {
-        $centers = division::all();
-        return response()->json($centers);
+        uploads::findOrFail($request->id)->delete();
     }
 }

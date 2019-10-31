@@ -14,7 +14,8 @@ Route::group(
         'middleware'        => ['web','auth'],
     ],
     function (){
-
+    Route::Post('dropzone','UploadsController@dropzone')->name('dropzone');
+    Route::Post('delete/dropzone','UploadsController@deleteDropzone')->name('delete-dropzone');
     /*  workshop Route */
     Route::group([
         'prefix'    => 'workshops'
