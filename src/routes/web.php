@@ -16,6 +16,8 @@ Route::group(
     function (){
     Route::Post('dropzone','UploadsController@dropzone')->name('dropzone');
     Route::Post('delete/dropzone','UploadsController@deleteDropzone')->name('delete-dropzone');
+    Route::get('get/countries/', 'MasterController@getCountries')->name('get-countries');
+    Route::get('get/divisions/', 'MasterController@getDivisions')->name('get-divisions');
     /*  workshop Route */
     Route::group([
         'prefix'    => 'workshops'
@@ -60,8 +62,8 @@ Route::group(
         Route::get('create', 'CentersController@create');
         Route::post('create', 'CentersController@store')->name('center-create');
         Route::get('edit/{id}', 'CentersController@edit');
-        Route::post('edit/{id}', 'CentersController@update');
-        Route::post('delete/{id}', 'CentersController@delete');
+        Route::post('edit/{id}', 'CentersController@update')->name('center-update');
+        Route::post('delete/{id}', 'CentersController@delete')->name('center-delete');
         Route::get('get/countries/', 'CentersController@getCountries');
         Route::get('get/divisions/', 'CentersController@getDivisions');
     });
