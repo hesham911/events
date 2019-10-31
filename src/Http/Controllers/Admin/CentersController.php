@@ -146,4 +146,10 @@ class CentersController extends MasterController
         }
     }
 
+    public function destroy(Request $request)
+    {
+        $trainer= center::findOrFail($request->id);
+        $trainer->delete();
+    }
+
 }
