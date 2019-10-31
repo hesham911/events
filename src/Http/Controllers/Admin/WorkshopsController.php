@@ -51,7 +51,7 @@ class WorkshopsController extends Controller
             'start_date'    =>  'required|date',
             'end_date'      =>  'required|date',
             'description'   =>  'required|min:255',
-            'images'        =>  'required',
+            'file'          =>  'required',
             'center'        =>  'required',
             'trainer'       =>  'required',
             'countries'     =>  'required',
@@ -69,9 +69,20 @@ class WorkshopsController extends Controller
             $trainerId          =   $item['trainer'];
             $divisionId         =   $item['divisions'];
             $item['user_id']    = auth()->id();
-           $workshop = workshop::create($item);
+            $workshop = workshop::create($item);
 
-         $addTrainer =  $workshop->trainers()->attach($trainerId);
+            if (!empty($item['file'])){
+
+                foreach ($item['file'] as $key => $value){
+                    $image = uploads::findOrFail($value);
+                    $image->user_id = $workshop->user_id;
+                    $image->workshop_id = $workshop->id;
+                    $image->save();
+                }
+            }
+
+
+         $addTrainer =  $workshop->centers()->attach($trainerId);
          $addCenter =  $workshop->trainers()->attach($centerId);
          $addDivision =  division::find($divisionId)->workshops()->sync($workshop);
 
@@ -122,7 +133,7 @@ class WorkshopsController extends Controller
      */
     public function destroy($id)
     {
-        //
+      return  workshop::findOrFail($id)->delete();
     }
 
     public function getCenters()
@@ -148,4 +159,5 @@ class WorkshopsController extends Controller
         $centers = division::all();
         return response()->json($centers);
     }
+
 }
