@@ -87,7 +87,7 @@ class TrainersController extends MasterController
      */
     public function show($id)
     {
-        return view('adminEvents::workshops.show');
+        return view('adminEvents::trainers.show');
     }
 
     /**
@@ -96,9 +96,10 @@ class TrainersController extends MasterController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        return view('adminEvents::workshops.edit');
+        $item = trainer::findOrFail($request->id);
+        return view('adminEvents::trainers.edit',compact('item'));
     }
 
     /**
@@ -110,7 +111,44 @@ class TrainersController extends MasterController
      */
     public function update(Request $request, $id)
     {
-        //
+        $item = $request->all();
+        $rules = [
+            'first_name'        =>  'required|min:2',
+            'last_name'         =>  'required|min:2',
+            'address'           =>  'required',
+            'num_phone'         =>  'required|numeric|min:11',
+            'work_num_phone'    =>  'required|numeric|min:11',
+            'email'             =>  'required|email',
+            'url_fb'            =>  'required|url',
+            'url_twitter'       =>  'required|url',
+            'url_linked_in'     =>  'required|url',
+            'portfolio_link'    =>  'required|url',
+            'cv'                =>  'required|file|mimes:pdf,doc,docx',
+//            'website'           =>  'required|url',
+            'countries'         =>  'required',
+            'divisions'         =>  'required',
+        ];
+        $v = Validator::make($item,$rules);
+        if ($v->fails()){
+            dd($v->errors());
+        }else{
+            if (request()->hasFile('cv')){
+                $file = request()->file('cv');
+                $file_name =  time() . '-' . rand() . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('upload/files/'), $file_name );
+                //if(!empty($old_file)) @unlink(public_path('upload/files/').$old_file);
+                $item['cv'] = $file_name;
+            }
+            $divisionId         =   $item['divisions'];
+            $item['user_id']    = auth()->id();
+            $trainer = trainer::findOrFail($request->id);
+            $trainer->update($item);
+            $addDivision =  trainer::findOrFail($request->id)->divisions()
+                ->updateExistingPivot($trainer->divisions['0']->id,[
+                    'division_id' => $divisionId,
+                ]);
+
+        }
     }
 
     /**
@@ -119,9 +157,10 @@ class TrainersController extends MasterController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+       $trainer= trainer::findOrFail($request->id);
+       $trainer->delete();
     }
 
     public function getCountries()
