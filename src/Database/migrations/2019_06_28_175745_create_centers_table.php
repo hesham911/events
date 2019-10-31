@@ -31,6 +31,7 @@ class CreateCentersTable extends Migration
             //>features of centers
             $table->integer('num_class_room')->nullable();
             $table->tinyInteger('Air_conditioned_place')->default(0);
+            $table->tinyInteger('active')->default(0);
 
 
             $table->timestamps();
