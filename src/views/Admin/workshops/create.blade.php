@@ -249,7 +249,7 @@
 
     $.ajax({
         type: 'get',
-        url: 'get/countries/',
+        url: "{{route('get-countries')}}",
         data : {"_token":"{{ csrf_token() }}"},
         dataType: "json",
         success:function(data) {
@@ -273,7 +273,7 @@
 
     $.ajax({
         type: 'get',
-        url: 'get/divisions/',
+        url: "{{route('get-divisions')}}",
         data : {"_token":"{{ csrf_token() }}"},
         dataType: "json",
         success:function(data) {
