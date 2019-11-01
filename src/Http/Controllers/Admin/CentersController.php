@@ -21,7 +21,7 @@ class CentersController extends MasterController
     public function index()
     {
         $items = center::where('active',1)->paginate(15);
-        return view('adminEvents::centers.index');
+        return view('adminEvents::centers.index',compact('items'));
     }
 
     /**
