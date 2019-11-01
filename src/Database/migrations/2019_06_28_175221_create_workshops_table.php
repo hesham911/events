@@ -46,7 +46,7 @@ class CreateWorkshopsTable extends Migration
                 $table->date('end_date')->default(Carbon::now());
                 $table->time('start_time')->default('00:00:00');
                 $table->time('end_time')->default('00:00:00');
-                $table->tinyInteger('active')->default(0);
+                $table->tinyInteger('active')->default(1);
                 $table->timestamps();
             });
 
