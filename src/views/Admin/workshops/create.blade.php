@@ -6,7 +6,7 @@
 @endsection
 @section('content')
     <div class="h-event-form">
-        <form id="eventForm" action="{{route('eventCreate')}}" method="post" enctype="multipart/form-data">
+        <form id="eventForm" action="{{route('workshop-create')}}" method="post" enctype="multipart/form-data">
             {{ csrf_field() }}
             <div class="form-group">
                 <label for="title">Workshop name</label>

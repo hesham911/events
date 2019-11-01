@@ -6,7 +6,7 @@
 @endsection
 @section('content')
 
-    <form id="centerForm" action="{{route('trainer-create')}}" method="post" enctype="multipart/form-data">
+    <form id="centerForm" action="{{route('trainer-update',['id'=>$item->id])}}" method="post" enctype="multipart/form-data">
         {{csrf_field()}}
         <div class="form-row">
             <div class="form-group col-md-6">
