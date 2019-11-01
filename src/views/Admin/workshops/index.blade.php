@@ -2,7 +2,7 @@
 
 
 @section('titlePage')
-    <h1>Event Create</h1>
+    <h1>Events index</h1>
 @endsection
 @section('content')
    <div>
@@ -18,15 +18,24 @@
            </tr>
            </thead>
            <tbody>
-           <tr>
-               <th scope="row">1</th>
-               <td>Mark</td>
-               <td>Otto</td>
-               <td>@mdo</td>
-               <td>@mdo</td>
-               <td>@mdo</td>
+           @foreach($items as $item)
+               <tr>
+               <th scope="row">{{$item->id}}</th>
+               <td>{{$item->title}}</td>
+               <td>
+                   @foreach($item->centers as $key => $center)
+                        <span>{{$center->title}}</span>
+                   @endforeach
+               </td>
+               <td>
+                   @foreach($item->trainers as $key => $trainer)
+                       <span>{{$trainer->first_name.' '.$trainer->last_name}}</span>
+                   @endforeach
+               </td>
+               <td><a href="{{route('workshop-edit',['id'=>$item->id])}}" class="btn btn-info">edit</a></td>
+               <td><a href="{{route('workshop-delete',['id'=>$item->id])}}" class="btn btn-danger">delete</a></td>
            </tr>
-
+            @endforeach
            </tbody>
        </table>
    </div>

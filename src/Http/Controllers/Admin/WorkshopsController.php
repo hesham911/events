@@ -24,8 +24,8 @@ class WorkshopsController extends MasterController
      */
     public function index()
     {
-        $items = workshop::where('active',1)->paginate(15);
-        return view('adminEvents::workshops.index',compact('$items'));
+        $items = workshop::where('active',1)->with('centers','trainers')->paginate(15);
+        return view('adminEvents::workshops.index',compact('items'));
     }
 
     /**
@@ -83,8 +83,8 @@ class WorkshopsController extends MasterController
                 }
             }
 
-         $addTrainer =  $workshop->centers()->attach($trainerId);
-         $addCenter =  $workshop->trainers()->attach($centerId);
+         $addTrainer =  $workshop->centers()->attach($centerId);
+         $addCenter =  $workshop->trainers()->attach($trainerId);
          $addDivision =  division::find($divisionId)->workshops()->sync($workshop);
 
         }
@@ -96,9 +96,10 @@ class WorkshopsController extends MasterController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        return view('adminEvents::workshops.show');
+        $item = workshop::findOrFail($request->id);
+        return view('adminEvents::workshops.show',compact('item'));
     }
 
     /**
@@ -107,9 +108,10 @@ class WorkshopsController extends MasterController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        return view('adminEvents::workshops.edit');
+        $item = workshop::findOrFail($request->id);
+        return view('adminEvents::workshops.edit',compact('item'));
     }
 
     /**
