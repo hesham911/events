@@ -26,12 +26,10 @@ Route::group(
         Route::get('/', 'WorkshopsController@index');
         Route::get('show/{id}', 'WorkshopsController@show');
         Route::get('create', 'WorkshopsController@create');
-        Route::post('create', 'WorkshopsController@store')->name('eventCreate');
-        Route::get('edit/{id}', 'WorkshopsController@edit');
-        Route::post('edit/{id}', 'WorkshopsController@update');
-        Route::get('delete/{id}', 'WorkshopsController@delete');
-        Route::get('get/centers/', 'WorkshopsController@getCenters');
-        Route::get('get/trainers/', 'WorkshopsController@getTrainers');
+        Route::post('create', 'WorkshopsController@store')->name('workshop-create');
+        Route::get('edit/{id}', 'WorkshopsController@edit')->name('workshop-edit');
+        Route::post('edit/{id}', 'WorkshopsController@update')->name('workshop-update');;
+        Route::get('delete/{id}', 'WorkshopsController@delete')->name('workshop-delete');
     });
 
     /*  Trainer Route */
@@ -43,9 +41,9 @@ Route::group(
         Route::get('show/{id}', 'TrainersController@show');
         Route::get('create', 'TrainersController@create');
         Route::post('create', 'TrainersController@store')->name('trainer-create');
-        Route::get('edit/{id}', 'TrainersController@edit');
-        Route::post('edit/{id}', 'TrainersController@update');
-        Route::get('delete/{id}', 'TrainersController@delete');
+        Route::get('edit/{id}', 'TrainersController@edit')->name('trainer-edit');
+        Route::post('edit/{id}', 'TrainersController@update')->name('trainer-update');
+        Route::get('delete/{id}', 'TrainersController@delete')->name('trainer-delete');
     });
 
     /*  centers Route */
